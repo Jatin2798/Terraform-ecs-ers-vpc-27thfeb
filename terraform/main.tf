@@ -98,19 +98,20 @@ resource "aws_security_group" "ecs_task" {
     }
 }
 
-# ECS Repository
+# ECR Repository
 resource "aws_ecr_repository" "app" {
-    name = "hello-world-app"  # Corrected name
+  name = "${lower(var.project_name)}-app"
 
-    image_scanning_configuration {
-        scan_on_push = true
-    }
+  image_scanning_configuration {
+    scan_on_push = true
+  }
 
-    tags = {
-        Name        = "${var.project_name}-ecr"
-        Environment = var.environment
-    }
+  tags = {
+    Name        = "${lower(var.project_name)}-ecr"
+    Environment = var.environment
+  }
 }
+
 # ECS Cluster
 resource "aws_ecs_cluster" "main" {
     name = "${var.project_name}-cluster"
